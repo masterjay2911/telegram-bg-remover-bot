@@ -1,0 +1,24 @@
+services:
+  # API Service
+  - type: web
+    name: bg-remove-api
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.0
+    plan: free
+
+  # Bot Service
+  - type: worker
+    name: telegram-bot
+    env: node
+    buildCommand: npm install
+    startCommand: node index.js
+    envVars:
+      - key: NODE_VERSION
+        value: 16.0.0
+      - key: API_URL
+        value: https://bg-remove-api.onrender.com
+    plan: free
